@@ -18,6 +18,9 @@
   .video-wrap{
     position:fixed; inset:0; width:100vw; height:100vh; overflow:hidden;
   }
+  @supports (height: 100dvh){
+    .video-wrap{ height:100dvh; }
+  }
   .video-wrap video{
     position:absolute; inset:0;
     width:100%; height:100%;
@@ -49,6 +52,34 @@
     filter:drop-shadow(0 0 8px rgba(255,255,255,0.75)) drop-shadow(0 0 18px rgba(210,238,250,0.45)) brightness(1.2);
     pointer-events:none;
     z-index:2;
+  }
+
+  .site-name{
+    position:absolute;
+    top:0; left:0;
+    transform:translate(-50%, -100%);
+    text-align:center;
+    pointer-events:none;
+    z-index:2;
+  }
+  .site-name .line1{
+    display:block;
+    color:var(--moon);
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-size:1.6rem;
+    letter-spacing:0.06em;
+    text-shadow:0 0 14px rgba(4,8,16,0.65);
+  }
+  .site-name .line2{
+    display:block;
+    margin-top:0.5rem;
+    color:var(--mist);
+    font-weight:500;
+    font-size:0.95rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    text-shadow:0 0 12px rgba(4,8,16,0.6);
   }
 
   nav{
@@ -84,11 +115,15 @@
 <body>
 
 <div class="video-wrap">
-  <video id="bgvideo" autoplay muted loop playsinline>
+  <video id="bgvideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
     <source src="moon-clouds.mp4" type="video/mp4">
   </video>
   <div class="moon-mask" id="moonMask"></div>
   <img class="logo-overlay" id="logoOverlay" src="logo.png" alt="">
+  <div class="site-name" id="siteName">
+    <span class="line1">Mathématiques</span>
+    <span class="line2">M. Brahim</span>
+  </div>
 </div>
 
 <nav>
@@ -100,25 +135,50 @@
 
 <script>
   // Moon's exact position/size measured in the source video's native pixels
-  // (3840x2160), constant across the whole clip.
-  const NATIVE_W = 3840, NATIVE_H = 2160;
-  const MOON_CX = 1911, MOON_CY = 899;   // native px center of the moon
-  const MOON_D  = 102;                    // native px diameter of the moon disc
+  // (1920x1080 — same aspect as the original 3840x2160 shot), constant
+  // across the whole clip.
+  const REF_W = 1920, REF_H = 1080;
+  const MOON_CX = 955.5, MOON_CY = 449.5;   // reference px center of the moon
+  const MOON_D  = 51;                        // reference px diameter of the moon disc
 
-  const mask = document.getElementById('moonMask');
-  const logo = document.getElementById('logoOverlay');
+  const wrap  = document.querySelector('.video-wrap');
+  const video = document.getElementById('bgvideo');
+  const mask  = document.getElementById('moonMask');
+  const logo  = document.getElementById('logoOverlay');
+  const name  = document.getElementById('siteName');
+
+  function tryPlay(){
+    const p = video.play();
+    if (p && p.catch){
+      p.catch(() => {
+        const retry = () => { video.play(); };
+        document.addEventListener('touchstart', retry, { once: true });
+        document.addEventListener('click', retry, { once: true });
+      });
+    }
+  }
+  video.muted = true;
+  tryPlay();
+  video.addEventListener('loadeddata', tryPlay);
 
   function placeMoonElements(){
-    const vw = window.innerWidth, vh = window.innerHeight;
-    // object-fit: cover scale factor (video is centered, object-position: center center)
-    const scale = Math.max(vw / NATIVE_W, vh / NATIVE_H);
-    const renderedW = NATIVE_W * scale, renderedH = NATIVE_H * scale;
-    const offsetX = (vw - renderedW) / 2;
-    const offsetY = (vh - renderedH) / 2;
+    const rect = wrap.getBoundingClientRect();
+    const vw = rect.width, vh = rect.height;
 
-    const screenX = offsetX + MOON_CX * scale;
-    const screenY = offsetY + MOON_CY * scale;
-    const diskPx  = MOON_D * scale;
+    // Use the video's real intrinsic size once known, else fall back to
+    // the reference size (same aspect ratio either way).
+    const nativeW = video.videoWidth  || REF_W;
+    const nativeH = video.videoHeight || REF_H;
+    const refToNative = nativeW / REF_W;
+
+    const scale = Math.max(vw / nativeW, vh / nativeH);
+    const renderedW = nativeW * scale, renderedH = nativeH * scale;
+    const offsetX = rect.left + (vw - renderedW) / 2;
+    const offsetY = rect.top  + (vh - renderedH) / 2;
+
+    const screenX = offsetX + (MOON_CX * refToNative) * scale;
+    const screenY = offsetY + (MOON_CY * refToNative) * scale;
+    const diskPx  = (MOON_D * refToNative) * scale;
 
     // The logo artwork is a 256x256 canvas; the drawn circle itself is
     // ~0.881 of that canvas (the cloud flourishes poke out beyond it),
@@ -137,11 +197,19 @@
     logo.style.top  = screenY + 'px';
     logo.style.width  = logoSize + 'px';
     logo.style.height = logoSize + 'px';
+
+    name.style.left = screenX + 'px';
+    name.style.top  = (screenY - logoSize / 2 - 34) + 'px';
   }
 
   placeMoonElements();
+  video.addEventListener('loadedmetadata', placeMoonElements);
   window.addEventListener('resize', placeMoonElements);
-  window.addEventListener('orientationchange', placeMoonElements);
+  window.addEventListener('orientationchange', () => setTimeout(placeMoonElements, 300));
+  if (window.visualViewport){
+    window.visualViewport.addEventListener('resize', placeMoonElements);
+    window.visualViewport.addEventListener('scroll', placeMoonElements);
+  }
 </script>
 
 </body>
