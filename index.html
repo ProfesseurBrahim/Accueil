@@ -1,1 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M. Brahim — Mathématiques</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --moon: #eaf1fb;
+    --mist: #a9bcd6;
+    --gold: #d9b877;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ height:100%; background:#070d1a; overflow:hidden; }
 
+  .video-wrap{
+    position:fixed; inset:0; width:100vw; height:100vh; overflow:hidden;
+  }
+  .video-wrap video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    object-position:center center;
+  }
+  .video-wrap::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(4,8,16,0.25) 0%, rgba(4,8,16,0.15) 55%, rgba(3,6,12,0.6) 100%);
+  }
+
+  .moon-mask{
+    position:absolute;
+    top:0; left:0;
+    width:120px; height:120px;
+    border-radius:50%;
+    background:radial-gradient(circle, #0a1524 0%, #0a1524 80%, rgba(10,21,36,0.6) 92%, rgba(10,21,36,0) 100%);
+    filter:blur(1.5px);
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    z-index:1;
+  }
+  .logo-overlay{
+    position:absolute;
+    top:0; left:0;
+    width:96px; height:96px;
+    transform:translate(-50%,-50%);
+    opacity:0.96;
+    filter:drop-shadow(0 0 10px rgba(234,241,251,0.35));
+    pointer-events:none;
+    z-index:2;
+  }
+
+  nav{
+    position:fixed;
+    top:56%; left:50%;
+    transform:translate(-50%, -50%);
+    z-index:2;
+    display:flex;
+    gap:clamp(1.6rem, 5vw, 4rem);
+  }
+  nav a{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-size:clamp(1.3rem, 3vw, 1.9rem);
+    color:var(--moon);
+    text-decoration:none;
+    letter-spacing:0.01em;
+    padding-bottom:6px;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.3s ease, color 0.3s ease;
+  }
+  nav a:hover, nav a:focus-visible{
+    color:var(--gold);
+    border-bottom-color:var(--gold);
+    outline:none;
+  }
+
+  @media (max-width: 520px){
+    nav{ gap:1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="video-wrap">
+  <video id="bgvideo" autoplay muted loop playsinline>
+    <source src="moon-clouds.mp4" type="video/mp4">
+  </video>
+  <div class="moon-mask" id="moonMask"></div>
+  <img class="logo-overlay" id="logoOverlay" src="logo.png" alt="">
+</div>
+
+<nav>
+  <a href="https://professeurbrahim.github.io/6eme/">6e</a>
+  <a href="https://professeurbrahim.github.io/5eme/">5e</a>
+  <a href="https://professeurbrahim.github.io/4eme/">4e</a>
+  <a href="https://professeurbrahim.github.io/3eme/">3e</a>
+</nav>
+
+<script>
+  // Moon's exact position/size measured in the source video's native pixels
+  // (3840x2160), constant across the whole clip.
+  const NATIVE_W = 3840, NATIVE_H = 2160;
+  const MOON_CX = 1911, MOON_CY = 899;   // native px center of the moon
+  const MOON_D  = 102;                    // native px diameter of the moon disc
+
+  const mask = document.getElementById('moonMask');
+  const logo = document.getElementById('logoOverlay');
+
+  function placeMoonElements(){
+    const vw = window.innerWidth, vh = window.innerHeight;
+    // object-fit: cover scale factor (video is centered, object-position: center center)
+    const scale = Math.max(vw / NATIVE_W, vh / NATIVE_H);
+    const renderedW = NATIVE_W * scale, renderedH = NATIVE_H * scale;
+    const offsetX = (vw - renderedW) / 2;
+    const offsetY = (vh - renderedH) / 2;
+
+    const screenX = offsetX + MOON_CX * scale;
+    const screenY = offsetY + MOON_CY * scale;
+    const diskPx  = MOON_D * scale;
+
+    // The logo artwork is a 256x256 canvas; the drawn circle itself is
+    // ~0.881 of that canvas (the cloud flourishes poke out beyond it),
+    // and its center sits very slightly right/down of the canvas center.
+    const logoSize = diskPx * 2.5;
+    const circleSize = logoSize * 0.881;
+    const circleOffsetX = logoSize * 0.015625;
+    const circleOffsetY = logoSize * 0.005859;
+
+    mask.style.left = (screenX + circleOffsetX) + 'px';
+    mask.style.top  = (screenY + circleOffsetY) + 'px';
+    mask.style.width  = circleSize + 'px';
+    mask.style.height = circleSize + 'px';
+
+    logo.style.left = screenX + 'px';
+    logo.style.top  = screenY + 'px';
+    logo.style.width  = logoSize + 'px';
+    logo.style.height = logoSize + 'px';
+  }
+
+  placeMoonElements();
+  window.addEventListener('resize', placeMoonElements);
+  window.addEventListener('orientationchange', placeMoonElements);
+</script>
+
+</body>
+</html>
