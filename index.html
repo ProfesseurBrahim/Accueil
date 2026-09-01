@@ -7,20 +7,29 @@
 <style>
   * { box-sizing: border-box; }
 
-  body {
+  html, body {
     margin: 0;
+    padding: 0;
+    height: 100%;
     font-family: Arial, sans-serif;
+    overflow: hidden;
   }
 
+  /* Conteneur plein écran qui centre l'image en respectant son ratio,
+     comme "background-size: contain" mais en gardant les liens alignés */
   .fond-page {
-    position: relative;
-    width: 100%;
-    max-width: 1224px;
-    margin: 0 auto;
-    aspect-ratio: 1224 / 864;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: calc(100vw * 864 / 1224);
+    min-height: 100vh;
+    min-width: calc(100vh * 1224 / 864);
+    transform: translate(-50%, -50%);
     background-image: url('Fond.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
   }
 
   .niveau-lien {
