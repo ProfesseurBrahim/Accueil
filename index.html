@@ -2,238 +2,61 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<title>M. Brahim - Mathématiques</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M. Brahim — Mathématiques</title>
-<link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">  
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --moon: #eaf1fb;
-    --mist: #a9bcd6;
-    --gold: #d9b877;
-  }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html,body{ height:100%; background:#070d1a; overflow:hidden; }
+  * { box-sizing: border-box; }
 
-  .video-wrap{
-    position:fixed; inset:0; width:100vw; height:100vh; overflow:hidden;
-  }
-  @supports (height: 100dvh){
-    .video-wrap{ height:100dvh; }
-  }
-  .video-wrap video{
-    position:absolute; inset:0;
-    width:100%; height:100%;
-    object-fit:cover;
-    object-position:center center;
-  }
-  .video-wrap::after{
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(4,8,16,0.25) 0%, rgba(4,8,16,0.15) 55%, rgba(3,6,12,0.6) 100%);
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
   }
 
-  .moon-mask{
-    position:absolute;
-    top:0; left:0;
-    width:120px; height:120px;
-    border-radius:50%;
-    background:radial-gradient(circle, #0a1524 0%, #0a1524 80%, rgba(10,21,36,0.6) 92%, rgba(10,21,36,0) 100%);
-    filter:blur(1.5px);
-    transform:translate(-50%,-50%);
-    pointer-events:none;
-    z-index:0;
-  }
-  .logo-overlay{
-    position:absolute;
-    top:0; left:0;
-    width:96px; height:96px;
-    transform:translate(-50%,-50%);
-    opacity:1;
-    filter:drop-shadow(0 0 8px rgba(255,255,255,0.75)) drop-shadow(0 0 18px rgba(210,238,250,0.45)) brightness(1.2);
-    pointer-events:none;
-    z-index:2;
+  .fond-page {
+    position: relative;
+    width: 100%;
+    max-width: 1224px;
+    margin: 0 auto;
+    aspect-ratio: 1224 / 864;
+    background-image: url('Fond.jpg');
+    background-size: cover;
+    background-position: center;
   }
 
-  .site-name{
-    position:absolute;
-    top:0; left:0;
-    transform:translate(-50%, -100%);
-    text-align:center;
-    pointer-events:none;
-    z-index:2;
-  }
-  .site-name .line1{
-    display:block;
-    color:var(--moon);
-    font-family:'Fraunces', serif;
-    font-weight:400;
-    font-size:1.6rem;
-    letter-spacing:0.06em;
-    text-shadow:0 0 14px rgba(4,8,16,0.65);
-  }
-  .site-name .line2{
-    display:block;
-    margin-top:0.5rem;
-    color:var(--mist);
-    font-weight:500;
-    font-size:0.95rem;
-    letter-spacing:0.18em;
-    text-transform:uppercase;
-    text-shadow:0 0 12px rgba(4,8,16,0.6);
+  .niveau-lien {
+    position: absolute;
+    /* le cercle devient une zone cliquable ronde */
+    border-radius: 50%;
+    cursor: pointer;
+    /* décommentez la ligne suivante pour visualiser les zones pendant les tests */
+    /* background: rgba(255,0,0,0.3); */
   }
 
-  nav{
-    position:fixed;
-    top:56%; left:50%;
-    transform:translate(-50%, -50%);
-    z-index:2;
-    display:flex;
-    gap:clamp(1rem, 3.5vw, 2.4rem);
-    padding:clamp(0.8rem, 2vw, 1.1rem) clamp(1.4rem, 4vw, 2.4rem);
-    border-radius:999px;
-    background:rgba(20, 32, 54, 0.28);
-    border:1px solid rgba(234, 241, 251, 0.16);
-    box-shadow:
-      0 8px 32px rgba(3, 6, 12, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    backdrop-filter:blur(14px) saturate(140%);
-    -webkit-backdrop-filter:blur(14px) saturate(140%);
-  }
-  nav a{
-    position:relative;
-    font-family:'Fraunces', serif;
-    font-weight:400;
-    font-size:clamp(1.2rem, 2.8vw, 1.7rem);
-    color:var(--moon);
-    text-decoration:none;
-    letter-spacing:0.01em;
-    padding:0.3rem 0.9rem;
-    border-radius:999px;
-    transition:color 0.3s ease, background 0.3s ease;
-  }
-  nav a:not(:last-child)::after{
-    content:"";
-    position:absolute;
-    right:calc(clamp(1rem, 3.5vw, 2.4rem) / -2 - 0.5px);
-    top:50%;
-    transform:translateY(-50%);
-    width:1px;
-    height:1.1em;
-    background:rgba(169, 188, 214, 0.3);
-  }
-  nav a:hover, nav a:focus-visible{
-    color:var(--gold);
-    background:rgba(217, 184, 119, 0.12);
-    outline:none;
-  }
+  /* Chaque cercle : position en % (left/top = coin haut-gauche, width/height = taille) */
 
-  @media (max-width: 520px){
-    nav{ gap:0.7rem; padding:0.7rem 1.2rem; }
-    nav a{ padding:0.25rem 0.6rem; }
-  }
+  #lien-6eme   { left: 40.6%; top: 6.5%;  width: 9.3%; height: 13.2%; }
+  #lien-5eme   { left: 26.8%; top: 16.8%; width: 9.3%; height: 13.2%; }
+  #lien-4eme   { left: 20.6%; top: 34.5%; width: 9.3%; height: 13.2%; }
+  #lien-3eme   { left: 22.4%; top: 53.7%; width: 9.3%; height: 13.2%; }
+  #lien-snt    { left: 50.7%; top: 79.5%; width: 9.3%; height: 13.2%; }
+  #lien-2nde   { left: 65.7%; top: 68.5%; width: 9.3%; height: 13.2%; }
+  #lien-1ere   { left: 73.7%; top: 49.6%; width: 9.3%; height: 13.2%; }
+  #lien-term   { left: 71.9%; top: 24.9%; width: 9.3%; height: 13.2%; }
+
 </style>
 </head>
 <body>
 
-<div class="video-wrap">
-  <video id="bgvideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
-    <source src="moon-clouds.mp4" type="video/mp4">
-  </video>
-  <div class="moon-mask" id="moonMask"></div>
-  <img class="logo-overlay" id="logoOverlay" src="logo.png" alt="">
-  <div class="site-name" id="siteName">
-    <span class="line1">Mathématiques</span>
-    <span class="line2">M. Brahim</span>
-  </div>
+<div class="fond-page">
+  <a href="https://professeurbrahim.github.io/6eme/"  id="lien-6eme"  class="niveau-lien" aria-label="6ème"></a>
+  <a href="https://professeurbrahim.github.io/5eme/"  id="lien-5eme"  class="niveau-lien" aria-label="5ème"></a>
+  <a href="https://professeurbrahim.github.io/4eme/"  id="lien-4eme"  class="niveau-lien" aria-label="4ème"></a>
+  <a href="https://professeurbrahim.github.io/3eme/"  id="lien-3eme"  class="niveau-lien" aria-label="3ème"></a>
+  <a href="https://professeurbrahim.github.io/snt/"   id="lien-snt"   class="niveau-lien" aria-label="SNT"></a>
+  <a href="https://professeurbrahim.github.io/2nde/"  id="lien-2nde"  class="niveau-lien" aria-label="2nde"></a>
+  <a href="https://professeurbrahim.github.io/1ere/"  id="lien-1ere"  class="niveau-lien" aria-label="1ère"></a>
+  <a href="https://professeurbrahim.github.io/term/"  id="lien-term"  class="niveau-lien" aria-label="Terminale"></a>
 </div>
-
-<nav>
-  <a href="https://professeurbrahim.github.io/6eme/">6e</a>
-  <a href="https://professeurbrahim.github.io/5eme/">5e</a>
-  <a href="https://professeurbrahim.github.io/4eme/">4e</a>
-  <a href="https://professeurbrahim.github.io/3eme/">3e</a>
-</nav>
-
-<script>
-  // Moon's exact position/size measured in the source video's native pixels
-  // (1920x1080 — same aspect as the original 3840x2160 shot), constant
-  // across the whole clip.
-  const REF_W = 1920, REF_H = 1080;
-  const MOON_CX = 955.5, MOON_CY = 449.5;   // reference px center of the moon
-  const MOON_D  = 51;                        // reference px diameter of the moon disc
-
-  const wrap  = document.querySelector('.video-wrap');
-  const video = document.getElementById('bgvideo');
-  const mask  = document.getElementById('moonMask');
-  const logo  = document.getElementById('logoOverlay');
-  const name  = document.getElementById('siteName');
-
-  function tryPlay(){
-    const p = video.play();
-    if (p && p.catch){
-      p.catch(() => {
-        const retry = () => { video.play(); };
-        document.addEventListener('touchstart', retry, { once: true });
-        document.addEventListener('click', retry, { once: true });
-      });
-    }
-  }
-  video.muted = true;
-  tryPlay();
-  video.addEventListener('loadeddata', tryPlay);
-
-  function placeMoonElements(){
-    const rect = wrap.getBoundingClientRect();
-    const vw = rect.width, vh = rect.height;
-
-    // Use the video's real intrinsic size once known, else fall back to
-    // the reference size (same aspect ratio either way).
-    const nativeW = video.videoWidth  || REF_W;
-    const nativeH = video.videoHeight || REF_H;
-    const refToNative = nativeW / REF_W;
-
-    const scale = Math.max(vw / nativeW, vh / nativeH);
-    const renderedW = nativeW * scale, renderedH = nativeH * scale;
-    const offsetX = rect.left + (vw - renderedW) / 2;
-    const offsetY = rect.top  + (vh - renderedH) / 2;
-
-    const screenX = offsetX + (MOON_CX * refToNative) * scale;
-    const screenY = offsetY + (MOON_CY * refToNative) * scale;
-    const diskPx  = (MOON_D * refToNative) * scale;
-
-    // The logo artwork is a 256x256 canvas; the drawn circle itself is
-    // ~0.881 of that canvas (the cloud flourishes poke out beyond it),
-    // and its center sits very slightly right/down of the canvas center.
-    const logoSize = diskPx * 2.5;
-    const circleSize = logoSize * 0.881;
-    const circleOffsetX = logoSize * 0.015625;
-    const circleOffsetY = logoSize * 0.005859;
-
-    mask.style.left = (screenX + circleOffsetX) + 'px';
-    mask.style.top  = (screenY + circleOffsetY) + 'px';
-    mask.style.width  = circleSize + 'px';
-    mask.style.height = circleSize + 'px';
-
-    logo.style.left = screenX + 'px';
-    logo.style.top  = screenY + 'px';
-    logo.style.width  = logoSize + 'px';
-    logo.style.height = logoSize + 'px';
-
-    name.style.left = screenX + 'px';
-    name.style.top  = (screenY - logoSize / 2 - 34) + 'px';
-  }
-
-  placeMoonElements();
-  video.addEventListener('loadedmetadata', placeMoonElements);
-  window.addEventListener('resize', placeMoonElements);
-  window.addEventListener('orientationchange', () => setTimeout(placeMoonElements, 300));
-  if (window.visualViewport){
-    window.visualViewport.addEventListener('resize', placeMoonElements);
-    window.visualViewport.addEventListener('scroll', placeMoonElements);
-  }
-</script>
 
 </body>
 </html>
