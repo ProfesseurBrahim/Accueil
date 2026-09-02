@@ -11,78 +11,86 @@
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: 'Georgia', 'Times New Roman', serif;
     overflow: hidden;
   }
 
-  /* Calque de fond flouté qui remplit tout l'écran (utile si le format
-     de l'écran ne correspond pas exactement au 16:9 de l'image) */
-  .fond-flou {
+  .fond-page {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('Fond.jpg');
-    background-size: cover;
-    background-position: center;
-    filter: blur(30px) brightness(0.9);
-    transform: scale(1.15);
-    z-index: 0;
-  }
-
-  /* Conteneur qui affiche l'image ENTIÈRE, sans rognage, centrée à l'écran */
-  .fond-page {
-    position: fixed;
-    top: 50%;
-    left: 50%;
     width: 100vw;
-    height: calc(100vw * 768 / 1376);
-    max-height: 100vh;
-    max-width: calc(100vh * 1376 / 768);
-    transform: translate(-50%, -50%);
+    height: 100vh;
     background-image: url('Fond.jpg');
-    background-size: contain;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 1;
   }
 
-  .niveau-lien {
+  /* Conteneur de l'image centrale : garde toujours le même ratio que l'image
+     (2166 x 2072), donc rien n'est jamais déformé, quelle que soit la taille
+     de l'écran. */
+  .image-centrale {
     position: absolute;
-    z-index: 2;
-    border-radius: 50%;
-    cursor: pointer;
-    /* décommentez pour visualiser les zones cliquables pendant les tests */
-    /* background: rgba(255,0,0,0.3); */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 92vmin;
+    aspect-ratio: 2166 / 2072;
+    max-width: 95vw;
+    max-height: 95vh;
   }
 
-  /* Positions en % calculées sur l'image 1376x768 */
+  .image-centrale img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
 
-  #lien-6eme { left: 41.28%; top: 3.65%;  width: 10.17%; height: 18.23%; }
-  #lien-5eme { left: 31.03%; top: 14.06%; width: 10.17%; height: 18.23%; }
-  #lien-4eme { left: 25.44%; top: 32.55%; width: 10.17%; height: 18.23%; }
-  #lien-3eme { left: 26.74%; top: 54.82%; width: 10.17%; height: 18.23%; }
-  #lien-snt  { left: 48.55%; top: 79.17%; width: 10.17%; height: 18.23%; }
-  #lien-2nde { left: 60.47%; top: 67.97%; width: 10.17%; height: 18.23%; }
-  #lien-1ere { left: 65.77%; top: 47.92%; width: 10.17%; height: 18.23%; }
-  #lien-term { left: 64.10%; top: 23.05%; width: 10.17%; height: 18.23%; }
+  /* Liens invisibles positionnés exactement sur chaque cercle de l'image,
+     en pourcentage du conteneur (donc toujours alignés, même si la taille
+     change). */
+  .niveau {
+    position: absolute;
+    width: 16%;
+    height: 16.7%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* Décommente la ligne ci-dessous pour visualiser les zones cliquables pendant les réglages */
+  /* .niveau { outline: 2px dashed red; } */
+
+  #lien-6eme { left: 44.6%; top: 9.6%; }
+  #lien-5eme { left: 24.0%; top: 17.2%; }
+  #lien-4eme { left: 12.4%; top: 35.0%; }
+  #lien-3eme { left: 9.4%;  top: 55.6%; }
+  #lien-snt  { left: 62.9%; top: 88.6%; }
+  #lien-2nde { left: 79.8%; top: 76.6%; }
+  #lien-1ere { left: 89.2%; top: 56.5%; }
+  #lien-term { left: 87.4%; top: 36.4%; }
 
 </style>
 </head>
 <body>
 
-<div class="fond-flou"></div>
-
 <div class="fond-page">
-  <a href="https://professeurbrahim.github.io/6eme/"  id="lien-6eme"  class="niveau-lien" aria-label="6ème"></a>
-  <a href="https://professeurbrahim.github.io/5eme/"  id="lien-5eme"  class="niveau-lien" aria-label="5ème"></a>
-  <a href="https://professeurbrahim.github.io/4eme/"  id="lien-4eme"  class="niveau-lien" aria-label="4ème"></a>
-  <a href="https://professeurbrahim.github.io/3eme/"  id="lien-3eme"  class="niveau-lien" aria-label="3ème"></a>
-  <a href="https://professeurbrahim.github.io/snt/"   id="lien-snt"   class="niveau-lien" aria-label="SNT"></a>
-  <a href="https://professeurbrahim.github.io/2nde/"  id="lien-2nde"  class="niveau-lien" aria-label="2nde"></a>
-  <a href="https://professeurbrahim.github.io/1ere/"  id="lien-1ere"  class="niveau-lien" aria-label="1ère"></a>
-  <a href="https://professeurbrahim.github.io/term/"  id="lien-term"  class="niveau-lien" aria-label="Terminale"></a>
+
+  <div class="image-centrale">
+    <img src="page_garde.png" alt="M. Brahim - Mathématiques">
+
+    <a href="https://professeurbrahim.github.io/6eme/"  id="lien-6eme"  class="niveau" aria-label="6ème"></a>
+    <a href="https://professeurbrahim.github.io/5eme/"  id="lien-5eme"  class="niveau" aria-label="5ème"></a>
+    <a href="https://professeurbrahim.github.io/4eme/"  id="lien-4eme"  class="niveau" aria-label="4ème"></a>
+    <a href="https://professeurbrahim.github.io/3eme/"  id="lien-3eme"  class="niveau" aria-label="3ème"></a>
+    <a href="https://professeurbrahim.github.io/snt/"   id="lien-snt"   class="niveau" aria-label="SNT"></a>
+    <a href="https://professeurbrahim.github.io/2nde/"  id="lien-2nde"  class="niveau" aria-label="2nde"></a>
+    <a href="https://professeurbrahim.github.io/1ere/"  id="lien-1ere"  class="niveau" aria-label="1ère"></a>
+    <a href="https://professeurbrahim.github.io/term/"  id="lien-term"  class="niveau" aria-label="Term"></a>
+  </div>
+
 </div>
 
 </body>
