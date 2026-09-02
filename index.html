@@ -28,6 +28,14 @@
     background-repeat: no-repeat;
   }
 
+  /* Sur téléphone (écran étroit), on utilise l'image de fond verticale dédiée */
+  @media (max-width: 768px) {
+    .fond-page {
+      background-image: url('page_garde_telephone.jpg');
+      background-size: cover;
+    }
+  }
+
   /* Conteneur de l'image centrale : garde toujours le même ratio que l'image
      (2166 x 2072), donc rien n'est jamais déformé, quelle que soit la taille
      de l'écran. */
